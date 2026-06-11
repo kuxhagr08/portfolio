@@ -986,15 +986,54 @@ h1, h2, h3, h4, h5, h6 {
     .footer-grid {
         grid-template-columns: 1fr 1fr;
     }
-    .nav-links, .nav-right {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(11, 17, 32, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 2rem;
+        border-radius: 0 0 1.5rem 1.5rem;
+        border: 1px solid var(--border-color);
+        border-top: none;
+        align-items: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .nav-right {
         display: none;
     }
     .hamburger {
         display: block;
     }
+    .image-wrapper {
+        width: 350px;
+        height: 350px;
+    }
 }
 
 @media (max-width: 768px) {
+    .section {
+        padding: 4rem 5% 2rem;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .image-wrapper {
+        width: 280px;
+        height: 280px;
+    }
+    .badge {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+    .badge-1 { left: -10px; }
+    .badge-2 { left: 10px; }
     .skills-grid {
         grid-template-columns: 1fr;
     }
