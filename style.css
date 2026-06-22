@@ -909,6 +909,8 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-columns: 1fr 1.5fr;
     gap: 4rem;
     margin-bottom: 4rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Contact Left */
@@ -934,6 +936,9 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 1rem;
     margin-bottom: 1rem;
 }
+.info-card > div {
+    min-width: 0;
+}
 .info-icon {
     width: 50px;
     height: 50px;
@@ -954,6 +959,8 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1rem;
     color: var(--text-primary);
     font-weight: 500;
+    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 .connect-icons {
@@ -1184,6 +1191,8 @@ h1, h2, h3, h4, h5, h6 {
     .contact-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
+        width: 100%;
+        max-width: 100%;
     }
     .footer-grid {
         grid-template-columns: 1fr 1fr;
@@ -1424,7 +1433,9 @@ h1, h2, h3, h4, h5, h6 {
         padding: 1.2rem;
     }
     .form-card {
-        padding: 1.5rem;
+        padding: 1.2rem;
+        width: 100%;
+        max-width: 100%;
     }
     .start-project-cta h3 {
         font-size: 1.5rem;
