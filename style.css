@@ -1206,11 +1206,17 @@ h1, h2, h3, h4, h5, h6 {
         height: 240px;
     }
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
     }
     .hero-stats {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: 1.5rem;
+        justify-content: space-between;
+    }
+    .hero-stats .stat-item {
+        flex: 1 1 40%;
     }
     .hero-stats h3 {
         font-size: 1.5rem;
