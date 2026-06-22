@@ -449,6 +449,28 @@ h1, h2, h3, h4, h5, h6 {
     padding: 1.5rem;
     border-radius: 1rem;
     margin-bottom: 1.5rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+.focus-card::before, .education-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+    opacity: 0;
+    transition: var(--transition);
+}
+.focus-card:hover, .education-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+}
+.focus-card:hover::before, .education-card:hover::before {
+    opacity: 1;
 }
 .focus-card h4, .education-card h4 {
     font-size: 1.1rem;
@@ -493,36 +515,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-secondary);
 }
 
-/* Light Theme Education Card */
-.education-card.light-theme-card {
-    background: #ffffff;
-    color: #1e293b;
-    border: none;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-.education-card.light-theme-card h4.edu-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #000000;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--accent-blue);
-    display: block;
-    text-transform: uppercase;
-}
-.education-card.light-theme-card .edu-item h5 {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #1e3a5f;
-    margin-bottom: 0.2rem;
-}
-.education-card.light-theme-card .edu-item p {
-    font-size: 0.9rem;
-    color: #475569;
-}
-.education-card.light-theme-card .edu-item p i {
-    font-style: italic;
-}
+
 
 /* Projects Showcase */
 .projects-container {
@@ -1240,6 +1233,10 @@ h1, h2, h3, h4, h5, h6 {
     .section {
         padding: 4rem 5% 2rem;
     }
+    .hero {
+        padding-top: 130px;
+        padding-bottom: 30px;
+    }
     .section-title {
         font-size: 2rem;
     }
@@ -1314,6 +1311,10 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 480px) {
     .section {
         padding: 3rem 4% 1.5rem;
+    }
+    .hero {
+        padding-top: 125px;
+        padding-bottom: 20px;
     }
     .greeting {
         font-size: 2rem;
@@ -1429,7 +1430,7 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 0.76rem;
         line-height: 1.4;
     }
-    .education-card.light-theme-card {
+    .education-card {
         padding: 1.2rem;
     }
     .form-card {
