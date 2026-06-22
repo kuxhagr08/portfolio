@@ -327,9 +327,16 @@ h1, h2, h3, h4, h5, h6 {
     width: 450px;
     height: 450px;
     border-radius: 50%;
-    background: var(--surface-color);
-    padding: 10px;
-    border: 1px solid var(--border-color);
+    background: #ffffff;
+    padding: 0;
+    border: 3px solid var(--accent-blue);
+    box-shadow: 0 0 35px rgba(59, 130, 246, 0.25);
+    transition: var(--transition);
+    animation: floatProfile 6s ease-in-out infinite;
+}
+.image-wrapper:hover {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 45px rgba(139, 92, 246, 0.4);
 }
 
 .image-wrapper img {
@@ -358,8 +365,8 @@ h1, h2, h3, h4, h5, h6 {
     left: -20px;
 }
 .badge-2 {
-    bottom: 10%;
-    left: 20px;
+    bottom: 20%;
+    right: -20px;
 }
 
 /* About Grid */
@@ -513,6 +520,37 @@ h1, h2, h3, h4, h5, h6 {
 .edu-item p {
     font-size: 0.85rem;
     color: var(--text-secondary);
+}
+
+.edu-fields {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+.edu-field-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.edu-field-item i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+.edu-field-item span {
+    line-height: 1.4;
+}
+
+/* Floating animation for avatar */
+@keyframes floatProfile {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0); }
 }
 
 
@@ -1248,8 +1286,13 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0.6rem 1rem;
         font-size: 0.8rem;
     }
-    .badge-1 { left: -5px; }
-    .badge-2 { left: 5px; }
+    .badge-1 {
+        left: -10px;
+    }
+    .badge-2 {
+        right: -10px;
+        left: auto;
+    }
 
     .achievements-grid {
         grid-template-columns: repeat(2, 1fr);
