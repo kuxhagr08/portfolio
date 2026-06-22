@@ -35,6 +35,8 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
@@ -43,6 +45,7 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
 }
 
 /* Utilities */
@@ -113,6 +116,7 @@ h1, h2, h3, h4, h5, h6 {
 .navbar {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     padding: 1.2rem 5%;
     display: flex;
@@ -1054,6 +1058,7 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: 1fr;
         text-align: center;
         height: auto;
+        min-height: auto;
         padding: 120px 5% 50px;
         gap: 2rem;
     }
@@ -1091,6 +1096,14 @@ h1, h2, h3, h4, h5, h6 {
     }
     .project-showcase.reverse .project-visual {
         order: 1;
+    }
+    .project-visual {
+        width: 100%;
+        max-width: 100%;
+    }
+    .mockup-frame {
+        width: 100%;
+        max-width: 100%;
     }
     
     .achievements-grid {
@@ -1194,6 +1207,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 480px) {
+    .section {
+        padding: 3rem 4% 1.5rem;
+    }
     .greeting {
         font-size: 2rem;
     }
@@ -1207,19 +1223,42 @@ h1, h2, h3, h4, h5, h6 {
     }
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+    }
+    .stat-card {
+        padding: 1rem 0.5rem;
+    }
+    .stat-card i {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    .stat-card h3 {
+        font-size: 1.3rem;
+    }
+    .stat-card p {
+        font-size: 0.75rem;
+    }
+    .value-card {
+        padding: 1rem;
         gap: 0.8rem;
+    }
+    .value-card h5 {
+        font-size: 0.95rem;
+    }
+    .value-card p {
+        font-size: 0.8rem;
     }
     .hero-stats {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 1.5rem;
+        gap: 1rem;
         justify-content: space-between;
     }
     .hero-stats .stat-item {
         flex: 1 1 40%;
     }
     .hero-stats h3 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
     .btn {
         width: 100%;
@@ -1230,14 +1269,35 @@ h1, h2, h3, h4, h5, h6 {
         width: 100%;
     }
     .about-left h3 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+    }
+    .project-showcase, .project-showcase.reverse {
+        padding: 1rem;
+        gap: 1.2rem;
+    }
+    .project-info h3 {
+        font-size: 1.4rem;
+    }
+    .project-info .project-desc {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    .key-features h4, .tech-tags h4 {
+        margin-bottom: 0.6rem;
+    }
+    .key-features li {
+        font-size: 0.85rem;
     }
     .achievement-card {
         flex-direction: column;
         align-items: center;
         text-align: center;
+        padding: 1.2rem;
     }
     .education-card.light-theme-card {
+        padding: 1.2rem;
+    }
+    .form-card {
         padding: 1.5rem;
     }
     .start-project-cta h3 {
