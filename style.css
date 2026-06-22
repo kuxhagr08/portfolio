@@ -1107,7 +1107,8 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .achievements-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
     }
     .skills-grid {
         grid-template-columns: 1fr 1fr;
@@ -1177,6 +1178,10 @@ h1, h2, h3, h4, h5, h6 {
     .badge-2 { left: 5px; }
     .skills-grid {
         grid-template-columns: 1fr;
+    }
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
     .stats-grid {
         grid-template-columns: 1fr 1fr; /* Keep 2 columns on tablet */
@@ -1288,11 +1293,30 @@ h1, h2, h3, h4, h5, h6 {
     .key-features li {
         font-size: 0.85rem;
     }
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
     .achievement-card {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: 1.2rem;
+        padding: 1rem 0.6rem;
+        gap: 0.8rem;
+    }
+    .achievement-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        font-size: 1.1rem;
+        border-radius: 0.8rem;
+    }
+    .achievement-content h4 {
+        font-size: 0.9rem;
+    }
+    .achievement-content p {
+        font-size: 0.76rem;
+        line-height: 1.4;
     }
     .education-card.light-theme-card {
         padding: 1.2rem;
