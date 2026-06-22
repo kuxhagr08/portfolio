@@ -120,3 +120,69 @@ if (contactForm) {
         this.reset();
     });
 }
+
+// Draggable Skills Carousel (Appinventiv Style)
+const initSkillsSlider = () => {
+    const slider = document.querySelector('.skills-slider-container');
+    if (!slider) return;
+
+    // Create custom drag badge cursor
+    const dragBadge = document.createElement('div');
+    dragBadge.className = 'skills-drag-badge';
+    dragBadge.innerText = 'DRAG';
+    document.body.appendChild(dragBadge);
+
+    let isDown = false;
+    let startX;
+    let scrollLeftVal;
+
+    // Position custom drag badge
+    const updateBadgePosition = (e) => {
+        dragBadge.style.left = `${e.clientX}px`;
+        dragBadge.style.top = `${e.clientY}px`;
+    };
+
+    // Show/hide drag badge on hover
+    slider.addEventListener('mouseenter', (e) => {
+        dragBadge.classList.add('visible');
+        updateBadgePosition(e);
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        dragBadge.classList.remove('visible');
+        isDown = false;
+        slider.classList.remove('active');
+        dragBadge.classList.remove('dragging');
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        updateBadgePosition(e);
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5; // Scroll speed factor
+        slider.scrollLeft = scrollLeftVal - walk;
+    });
+
+    slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('active');
+        dragBadge.classList.add('dragging');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeftVal = slider.scrollLeft;
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDown = false;
+        if (slider) {
+            slider.classList.remove('active');
+        }
+        dragBadge.classList.remove('dragging');
+    });
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSkillsSlider);
+} else {
+    initSkillsSlider();
+}
