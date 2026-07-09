@@ -5,6 +5,9 @@
 
 'use strict';
 
+// Device/Performance detection helper
+const isMobileDevice = () => window.innerWidth < 768 || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
 // ─────────────────────────────────────────────────────────────
 // 1. PRELOADER
 // ─────────────────────────────────────────────────────────────
@@ -51,8 +54,8 @@ document.body.style.overflow = 'hidden';
     // WebGL Context
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
-    if (!gl) {
-        // Fallback: CSS gradient animation
+    if (!gl || isMobileDevice()) {
+        // Fallback: CSS gradient background
         canvas.style.display = 'none';
         return;
     }
@@ -248,11 +251,6 @@ const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
 
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-    updateActiveNav();
-});
-
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('open');
     navLinks.classList.toggle('open');
@@ -265,18 +263,27 @@ navLinks.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-function updateActiveNav() {
+// Optimized IntersectionObserver for active section highlight (removes scroll-thrashing offsetTop checks)
+(function initActiveNavObserver() {
     const sections = document.querySelectorAll('section[id]');
-    let current = '';
-    sections.forEach(s => {
-        const top = s.offsetTop - 150;
-        if (window.scrollY >= top) current = s.id;
+    const navLinksList = document.querySelectorAll('.nav-link');
+
+    const activeNavObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const current = entry.target.id;
+                navLinksList.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+                });
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '-25% 0px -40% 0px'
     });
 
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-    });
-}
+    sections.forEach(s => activeNavObserver.observe(s));
+})();
 
 // ─────────────────────────────────────────────────────────────
 // 5. TYPED TEXT EFFECT (Hero)
@@ -360,20 +367,22 @@ countEls.forEach(el => countObs.observe(el));
 // ─────────────────────────────────────────────────────────────
 // 8. MAGNETIC BUTTON EFFECT
 // ─────────────────────────────────────────────────────────────
-document.querySelectorAll('.magnetic-btn').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-    });
+if (!isMobileDevice()) {
+    document.querySelectorAll('.magnetic-btn').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
 
-    btn.addEventListener('mouseleave', () => {
-        btn.style.transform = '';
-        btn.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        setTimeout(() => { btn.style.transition = ''; }, 400);
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = '';
+            btn.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            setTimeout(() => { btn.style.transition = ''; }, 400);
+        });
     });
-});
+}
 
 // ─────────────────────────────────────────────────────────────
 // 9. 3D PROFILE CARD TILT
@@ -381,7 +390,7 @@ document.querySelectorAll('.magnetic-btn').forEach(btn => {
 const profileCard = document.getElementById('profileCard');
 const profile3d = document.getElementById('profile3d');
 
-if (profile3d) {
+if (profile3d && !isMobileDevice()) {
     profile3d.addEventListener('mousemove', e => {
         const rect = profile3d.getBoundingClientRect();
         const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
@@ -407,49 +416,53 @@ if (profile3d) {
 // ─────────────────────────────────────────────────────────────
 // 10. 3D PROJECT CARD TILT
 // ─────────────────────────────────────────────────────────────
-document.querySelectorAll('.project-card-3d').forEach(card => {
-    card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-        const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+if (!isMobileDevice()) {
+    document.querySelectorAll('.project-card-3d').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+            const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
 
-        card.style.setProperty('--tilt-x', (-y * 10) + 'deg');
-        card.style.setProperty('--tilt-y', (x * 10) + 'deg');
-        card.style.transform = `perspective(1200px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-12px) scale(1.02)`;
-        card.style.transition = 'transform 0.1s ease';
+            card.style.setProperty('--tilt-x', (-y * 10) + 'deg');
+            card.style.setProperty('--tilt-y', (x * 10) + 'deg');
+            card.style.transform = `perspective(1200px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-12px) scale(1.02)`;
+            card.style.transition = 'transform 0.1s ease';
 
-        // Dynamic shine
-        const shine = card.querySelector('.project-visual-wrap');
-        if (shine) {
-            shine.style.background = `radial-gradient(circle at ${((x + 0.5) * 100)}% ${((y + 0.5) * 100)}%, rgba(255,255,255,0.08) 0%, transparent 60%)`;
-        }
+            // Dynamic shine
+            const shine = card.querySelector('.project-visual-wrap');
+            if (shine) {
+                shine.style.background = `radial-gradient(circle at ${((x + 0.5) * 100)}% ${((y + 0.5) * 100)}%, rgba(255,255,255,0.08) 0%, transparent 60%)`;
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            const shine = card.querySelector('.project-visual-wrap');
+            if (shine) shine.style.background = '';
+        });
     });
-
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        const shine = card.querySelector('.project-visual-wrap');
-        if (shine) shine.style.background = '';
-    });
-});
+}
 
 // ─────────────────────────────────────────────────────────────
 // 11. SKILL BOX TILT
 // ─────────────────────────────────────────────────────────────
-document.querySelectorAll('.skill-box-3d').forEach(card => {
-    card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-        const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-        card.style.transform = `perspective(800px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateY(-10px)`;
-        card.style.transition = 'transform 0.1s ease';
-    });
+if (!isMobileDevice()) {
+    document.querySelectorAll('.skill-box-3d').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+            const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+            card.style.transform = `perspective(800px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateY(-10px)`;
+            card.style.transition = 'transform 0.1s ease';
+        });
 
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
     });
-});
+}
 
 // ─────────────────────────────────────────────────────────────
 // 12. CONTACT FORM
@@ -497,36 +510,40 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 // ─────────────────────────────────────────────────────────────
 // 14. PARALLAX FLOAT TAGS ON MOUSE MOVE
 // ─────────────────────────────────────────────────────────────
-const floatTags = document.querySelectorAll('.float-tag');
-document.addEventListener('mousemove', e => {
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    const dx = (e.clientX - cx) / cx;
-    const dy = (e.clientY - cy) / cy;
+if (!isMobileDevice()) {
+    const floatTags = document.querySelectorAll('.float-tag');
+    document.addEventListener('mousemove', e => {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const dx = (e.clientX - cx) / cx;
+        const dy = (e.clientY - cy) / cy;
 
-    floatTags.forEach((tag, i) => {
-        const depth = (i + 1) * 8;
-        tag.style.transform += ` translate(${dx * depth}px, ${dy * depth}px)`;
+        floatTags.forEach((tag, i) => {
+            const depth = (i + 1) * 8;
+            tag.style.transform = `translate(${dx * depth}px, ${dy * depth}px)`;
+        });
     });
-});
+}
 
 // ─────────────────────────────────────────────────────────────
 // 15. ACHIEVEMENT CARDS TILT
 // ─────────────────────────────────────────────────────────────
-document.querySelectorAll('.ach-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-        const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-        card.style.transform = `perspective(600px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-8px)`;
-        card.style.transition = 'transform 0.1s ease';
-    });
+if (!isMobileDevice()) {
+    document.querySelectorAll('.ach-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+            const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+            card.style.transform = `perspective(600px) rotateX(${-y * 8}deg) rotateY(${x * 8}deg) translateY(-8px)`;
+            card.style.transition = 'transform 0.1s ease';
+        });
 
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
     });
-});
+}
 
 // ─────────────────────────────────────────────────────────────
 // 16. INIT HERO ANIMATIONS (called after preloader)
@@ -546,6 +563,7 @@ function initHeroAnimations() {
 // 17. PARTICLES (floating dots layered on top of canvas)
 // ─────────────────────────────────────────────────────────────
 (function initParticleDots() {
+    if (isMobileDevice()) return;
     const container = document.createElement('div');
     container.style.cssText = `
         position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
@@ -627,9 +645,9 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ─────────────────────────────────────────────────────────────
-// 20. SCROLL PROGRESS BAR
+// 20. UNIFIED THROTTLED SCROLL EVENTS (Navbar scroll state & Progress bar)
 // ─────────────────────────────────────────────────────────────
-(function addScrollProgress() {
+(function initScrollEffects() {
     const bar = document.createElement('div');
     bar.style.cssText = `
         position: fixed; top: 0; left: 0; height: 2px; width: 0%;
@@ -639,12 +657,30 @@ document.addEventListener('visibilitychange', () => {
     `;
     document.body.appendChild(bar);
 
+    let scrollTicking = false;
+
     window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const pct = (scrollTop / docHeight) * 100;
-        bar.style.width = pct + '%';
-    });
+        if (!scrollTicking) {
+            window.requestAnimationFrame(() => {
+                const scrollTop = window.scrollY;
+                
+                // Toggle navbar scrolled class
+                if (navbar) {
+                    navbar.classList.toggle('scrolled', scrollTop > 60);
+                }
+
+                // Update progress bar
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (docHeight > 0) {
+                    const pct = (scrollTop / docHeight) * 100;
+                    bar.style.width = pct + '%';
+                }
+                
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }, { passive: true });
 })();
 
 // ─────────────────────────────────────────────────────────────
