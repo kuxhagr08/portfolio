@@ -684,49 +684,10 @@ document.addEventListener('visibilitychange', () => {
 })();
 
 // ─────────────────────────────────────────────────────────────
-// 21. RESUME MODAL HANDLER
-// ─────────────────────────────────────────────────────────────
-(function initResumeModal() {
-    const modal = document.getElementById('resumeModal');
-    const backdrop = document.getElementById('resumeModalBackdrop');
-    const closeBtn = document.getElementById('closeResumeModal');
-    const openBtns = [
-        document.getElementById('openResumeModal'),
-        document.getElementById('openResumeModal2')
-    ].filter(Boolean);
-
-    function openModal(e) {
-        if (e) e.preventDefault();
-        if (modal) {
-            modal.classList.add('active');
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    function closeModal() {
-        if (modal) {
-            modal.classList.remove('active');
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-        }
-    }
-
-    openBtns.forEach(btn => btn.addEventListener('click', openModal));
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (backdrop) backdrop.addEventListener('click', closeModal);
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
-            closeModal();
-        }
-    });
-})();
-
-// ─────────────────────────────────────────────────────────────
 // Console easter egg
 // ─────────────────────────────────────────────────────────────
 console.log('%c👋 Hey Developer!', 'font-size:2rem; font-weight:bold; color:#8b5cf6;');
 console.log('%cYou found the console! I\'m Kushagra — let\'s connect!', 'font-size:1rem; color:#3b82f6;');
 console.log('%c📧 shrivastavakushagra22@gmail.com', 'font-size:0.9rem; color:#22c55e;');
+
 
