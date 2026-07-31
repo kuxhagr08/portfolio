@@ -105,8 +105,11 @@
                     <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
                     <div class="btn-bg"></div>
                 </a>
+                <button class="btn-ghost magnetic-btn" id="openResumeModal">
+                    <span><i class="far fa-eye"></i> View Resume</span>
+                </button>
                 <a href="./resume.pdf" download target="_blank" class="btn-ghost magnetic-btn">
-                    <span><i class="fas fa-download"></i> Resume</span>
+                    <span><i class="fas fa-download"></i> Download</span>
                 </a>
             </div>
 
@@ -357,6 +360,14 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div class="exp-footer-actions reveal-up">
+                <button class="btn-primary-3d magnetic-btn" id="openResumeModal2">
+                    <span class="btn-text"><i class="fas fa-file-pdf"></i> View &amp; Download Resume PDF</span>
+                    <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+                    <div class="btn-bg"></div>
+                </button>
             </div>
         </div>
     </section>
@@ -771,6 +782,33 @@
             </div>
         </div>
     </footer>
+
+    <!-- ===== RESUME MODAL ===== -->
+    <div class="resume-modal" id="resumeModal" aria-hidden="true">
+        <div class="resume-modal-backdrop" id="resumeModalBackdrop"></div>
+        <div class="resume-modal-content">
+            <div class="resume-modal-header">
+                <div class="resume-modal-title">
+                    <i class="fas fa-file-pdf text-blue"></i>
+                    <span>Kushagra_Shrivastava_Resume.pdf</span>
+                </div>
+                <div class="resume-modal-actions">
+                    <a href="./resume.pdf" target="_blank" class="btn-modal-action">
+                        <i class="fas fa-external-link-alt"></i> New Tab
+                    </a>
+                    <a href="./resume.pdf" download class="btn-modal-action primary">
+                        <i class="fas fa-download"></i> Download PDF
+                    </a>
+                    <button class="btn-modal-close" id="closeResumeModal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="resume-modal-body">
+                <iframe src="./resume.pdf" title="Kushagra Shrivastava Resume" class="resume-iframe"></iframe>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="script.js"></script>
